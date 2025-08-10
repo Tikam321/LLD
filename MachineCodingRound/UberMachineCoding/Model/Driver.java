@@ -1,8 +1,10 @@
 package MachineCodingRound.UberMachineCoding.Model;
 
+import MachineCodingRound.UberMachineCoding.Notification.Observer;
+
 import java.util.UUID;
 
-public class Driver {
+public class Driver implements Observer {
     private String driverId;
     private String name;
     private double rating;
@@ -82,5 +84,10 @@ public class Driver {
 
     public void setCurrentLocations(Location currentLocations) {
         this.currentLocations = currentLocations;
+    }
+
+    @Override
+    public void update(String message) {
+        System.out.println("Notification to Driver " + name + ": " + message);
     }
 }

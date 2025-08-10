@@ -1,8 +1,10 @@
 package MachineCodingRound.UberMachineCoding.Model;
 
+import MachineCodingRound.UberMachineCoding.Notification.Observer;
+
 import java.util.UUID;
 
-public class Rider {
+public class Rider implements Observer{
     private String rider_id;
     private String name;
 
@@ -25,5 +27,10 @@ public class Rider {
 
     public void setRider_id(String rider_id) {
         this.rider_id = rider_id;
+    }
+
+    @Override
+    public void update(String message) {
+        System.out.println("Notification to Rider " + name + " "  + message);
     }
 }

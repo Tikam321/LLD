@@ -3,6 +3,7 @@ package MachineCodingRound.UberMachineCoding.Service;
 import MachineCodingRound.UberMachineCoding.Model.Driver;
 import MachineCodingRound.UberMachineCoding.Model.Ride;
 import MachineCodingRound.UberMachineCoding.Model.Rider;
+import MachineCodingRound.UberMachineCoding.Notification.EventRiderSubject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ public class UberService {
      Map<Rider, Ride> riderToRideMap;
      public static final double MAX_DISTANCE = 5;
      public static UberService instance;
+
 
      private UberService() {
           this.registeredDrivers = new ArrayList<>();

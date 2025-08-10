@@ -3,6 +3,7 @@ package MachineCodingRound.UberMachineCoding.Service;
 import MachineCodingRound.UberMachineCoding.Model.Driver;
 import MachineCodingRound.UberMachineCoding.Model.Ride;
 import MachineCodingRound.UberMachineCoding.Model.Rider;
+import MachineCodingRound.UberMachineCoding.Notification.EventRiderSubject;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,9 +15,15 @@ public class BookingRideService {
     private final FarePriceService farePriceService;
 
     public  static BookingRideService instance;
+    private EventRiderSubject eventRiderSubject;
+    private EventRiderSubject eventDriverSubject;
+
+
     private BookingRideService() {
         uberService = UberService.getInstance();
         farePriceService = FarePriceService.getInstance();
+        eventRiderSubject = new EventRiderSubject();
+        eventDriverSubject = new EventRiderSubject();
     }
 
     public static synchronized BookingRideService getInstance(){
@@ -32,7 +39,8 @@ public class BookingRideService {
         if (allowedDrivers.size() > 0) {
             System.out.println("there is the available drivers info ");
             farePriceService.showVehicleWithPrice(allowedDrivers, ride);
-
+            allowedDrivers.forEach(driver -> eventRiderSubject.addObserver(driver));
+            eventRiderSubject.notifyAllObservers("you got the new Ride notification");
         } else  {
             throw new IllegalArgumentException("There is no DRIVER available at the moment.");
         }
@@ -48,7 +56,8 @@ public class BookingRideService {
         Optional<Driver> targetDriver = uberService.registeredDrivers.stream()
                 .filter(driver -> allowedDriverForVehicleType(driver, ride)).findFirst();
         if (targetDriver.isPresent()) {
-
+            eventDriverSubject.addObserver(targetDriver.get());
+            eventDriverSubject.notifyAllObservers("accepted the ride booking");
             uberService.driverIdToRideRegistry.put(targetDriver.get().getDriverId(), ride);
             System.out.println("OTP is generated as driver " + targetDriver.get().getName() + " has accepted the ride");
         } else {
