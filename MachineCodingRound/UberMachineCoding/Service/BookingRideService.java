@@ -1,11 +1,13 @@
 package MachineCodingRound.UberMachineCoding.Service;
 
+import MachineCodingRound.UberMachineCoding.Model.Booking;
 import MachineCodingRound.UberMachineCoding.Model.Driver;
 import MachineCodingRound.UberMachineCoding.Model.Ride;
 import MachineCodingRound.UberMachineCoding.Model.Rider;
 import MachineCodingRound.UberMachineCoding.Notification.EventRiderSubject;
 import MachineCodingRound.UberMachineCoding.Strategy.PricingStrategy;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,10 +49,13 @@ public class BookingRideService {
                 && ride.getVehicleType().equals(driver.getVehicle().getVehicleType());
     }
 
-    public Driver acceptBooking(Ride ride, Rider rider) {
+    public Booking acceptBooking(Ride ride, Rider rider) {
+        Booking booking = null;
         Optional<Driver> targetDriver = uberService.registeredDrivers.stream()
                 .filter(driver -> allowedDriverForVehicleType(driver, ride)).findFirst();
         if (targetDriver.isPresent()) {
+            booking = new Booking(rider,new Date(System.currentTimeMillis()), targetDriver.get());
+
             eventDriverSubject.addObserver(targetDriver.get());
             eventDriverSubject.notifyAllObservers("accepted the ride booking");
             uberService.driverIdToRideRegistry.put(targetDriver.get().getDriverId(), ride);
@@ -58,7 +63,10 @@ public class BookingRideService {
         } else {
             throw new RuntimeException("there is no driver found please wait we processing it.....");
         }
-        return targetDriver.orElseThrow(() -> new RuntimeException("there is no driver available at the moment"));
+        if (booking != null) {
+            return booking;
+        }
+        throw new  RuntimeException("there is no driver available at the moment");
     }
 
 }

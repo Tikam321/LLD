@@ -6,6 +6,7 @@ import MachineCodingRound.UberMachineCoding.Service.OtpService;
 import MachineCodingRound.UberMachineCoding.Service.UberService;
 import MachineCodingRound.UberMachineCoding.Strategy.PricingStrategy;
 import MachineCodingRound.UberMachineCoding.Strategy.SurgePriceStrategy;
+import MachineCodingRound.UberMachineCoding.enums.VehicleType;
 
 public class uberServiceDemo {
     public static void main(String[] args) {
@@ -50,20 +51,23 @@ public class uberServiceDemo {
         Driver driver = null;
 
         // step2: driver accepted the ride
+        Booking booking = null;
         try{
-            driver = bookingRideService.acceptBooking(ride, rider1);
+            booking = bookingRideService.acceptBooking(ride, rider1);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
+        int otp = booking.getOtp();
+        System.out.println(otp);
         // step3: now rider1 provides the otp to driver2
         try{
-            otpService.confirmOtp(driver, rider1);
+            otpService.confirmOtp(booking);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
         // step4: ending the ride
-        uberService.endRide(driver);
+        uberService.endRide(booking);
     }
 }

@@ -1,8 +1,10 @@
 package MachineCodingRound.UberMachineCoding.Service;
 
+import MachineCodingRound.UberMachineCoding.Model.Booking;
 import MachineCodingRound.UberMachineCoding.Model.Driver;
 import MachineCodingRound.UberMachineCoding.Model.Ride;
 import MachineCodingRound.UberMachineCoding.Model.Rider;
+import MachineCodingRound.UberMachineCoding.enums.BookingStatus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,15 +41,15 @@ public class OtpService {
     }
 
 
-    public void confirmOtp(Driver driver, Rider rider ){
+    public void confirmOtp(Booking booking){
         int count = 1;
         while(count <= 3) {
             System.out.println("Enter the otp : count " + count);
             int requestedOtp = scanner.nextInt();
             scanner.nextLine();
-            if (requestedOtp == generateOtpService(rider)) {
+            if (requestedOtp == booking.getOtp()) {
                 System.out.println("otp is confirmed and Ride is confirmed and thank you for choosing us.");
-                driver.setDriverIsOccupied();
+                booking.updateStatus(BookingStatus.CREATED);
                 return ;
             }
             count++;
