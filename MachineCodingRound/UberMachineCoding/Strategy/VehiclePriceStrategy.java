@@ -10,7 +10,6 @@ public class VehiclePriceStrategy implements PricingStrategy{
             case GO -> 8.5;
             case SEDAN -> 70;
             case AUTO -> 15;
-            default -> throw new IllegalArgumentException("the vehicleType is wrong");
         };
         return baseFare * distance;
     }

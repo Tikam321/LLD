@@ -4,6 +4,7 @@ import MachineCodingRound.UberMachineCoding.Model.Driver;
 import MachineCodingRound.UberMachineCoding.Model.Ride;
 import MachineCodingRound.UberMachineCoding.Model.Rider;
 import MachineCodingRound.UberMachineCoding.Notification.EventRiderSubject;
+import MachineCodingRound.UberMachineCoding.Strategy.PricingStrategy;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,20 +18,14 @@ public class BookingRideService {
     public  static BookingRideService instance;
     private EventRiderSubject eventRiderSubject;
     private EventRiderSubject eventDriverSubject;
+    private PricingStrategy pricingStrategy;
 
-
-    private BookingRideService() {
+    public BookingRideService(PricingStrategy pricingStrategy) {
         uberService = UberService.getInstance();
         farePriceService = FarePriceService.getInstance();
         eventRiderSubject = new EventRiderSubject();
         eventDriverSubject = new EventRiderSubject();
-    }
-
-    public static synchronized BookingRideService getInstance(){
-        if (instance != null) {
-            return instance;
-        }
-        return instance = new BookingRideService();
+        this.pricingStrategy = pricingStrategy;
     }
 
     public void bookRide(Ride ride) {
@@ -38,7 +33,7 @@ public class BookingRideService {
                 .filter(driver -> allowedDriverForVehicleType(driver, ride)).toList();
         if (allowedDrivers.size() > 0) {
             System.out.println("there is the available drivers info ");
-            farePriceService.showVehicleWithPrice(allowedDrivers, ride);
+            farePriceService.showVehicleWithPrice(allowedDrivers, ride,pricingStrategy);
             allowedDrivers.forEach(driver -> eventRiderSubject.addObserver(driver));
             eventRiderSubject.notifyAllObservers("you got the new Ride notification");
         } else  {
