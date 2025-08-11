@@ -1,9 +1,10 @@
 package MachineCodingRound.UberMachineCoding.Service;
 
+import MachineCodingRound.UberMachineCoding.Model.Booking;
 import MachineCodingRound.UberMachineCoding.Model.Driver;
 import MachineCodingRound.UberMachineCoding.Model.Ride;
 import MachineCodingRound.UberMachineCoding.Model.Rider;
-import MachineCodingRound.UberMachineCoding.Notification.EventRiderSubject;
+import MachineCodingRound.UberMachineCoding.enums.BookingStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,12 +41,12 @@ public class UberService {
           registeredRiderRegistry.add(rider);
      }
 
-     public void endRide(Driver driver) {
-          driver.endRide();
-          Ride ride = null;
-          if (driverIdToRideRegistry.containsKey(driver.getDriverId())) {
-               ride = driverIdToRideRegistry.get(driver.getDriverId());
-               System.out.println("Ride id " + ride.getRideId() + " is reached its destination.") ;
+     public void endRide(Booking booking) {
+          if (booking != null) {
+               booking.updateStatus(BookingStatus.ENDED);
+               booking.getDriver().endRide();
+               System.out.println("the ride id" + booking.getBookingId() + " has ended thank you choosing us.");
+
           } else {
                throw new IllegalArgumentException("there is no ride exist for Driver");
           }

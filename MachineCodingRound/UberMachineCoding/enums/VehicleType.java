@@ -1,4 +1,4 @@
-package MachineCodingRound.UberMachineCoding.Model;
+package MachineCodingRound.UberMachineCoding.enums;
 
 public enum VehicleType {
     SEDAN,
