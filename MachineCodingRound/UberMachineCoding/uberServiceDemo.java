@@ -4,12 +4,18 @@ import MachineCodingRound.UberMachineCoding.Model.*;
 import MachineCodingRound.UberMachineCoding.Service.BookingRideService;
 import MachineCodingRound.UberMachineCoding.Service.OtpService;
 import MachineCodingRound.UberMachineCoding.Service.UberService;
+import MachineCodingRound.UberMachineCoding.Strategy.PricingStrategy;
+import MachineCodingRound.UberMachineCoding.Strategy.SurgePriceStrategy;
 
 public class uberServiceDemo {
     public static void main(String[] args) {
         UberService uberService = UberService.getInstance();
         OtpService otpService = OtpService.getInstance();
-        BookingRideService bookingRideService = BookingRideService.getInstance();
+        // price strategy
+
+        PricingStrategy surgePriceStrategy = new SurgePriceStrategy(2);
+
+        BookingRideService bookingRideService = new BookingRideService(surgePriceStrategy);
 
         // Rider name
         Rider rider1 = new Rider("Rider1");
