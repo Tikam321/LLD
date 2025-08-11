@@ -1,5 +1,7 @@
 package MachineCodingRound.UberMachineCoding.Model;
 
+import MachineCodingRound.UberMachineCoding.enums.VehicleType;
+
 import java.util.UUID;
 
 public class Vehicle {

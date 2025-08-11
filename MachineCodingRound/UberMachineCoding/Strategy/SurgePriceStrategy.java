@@ -1,7 +1,7 @@
 package MachineCodingRound.UberMachineCoding.Strategy;
 
 import MachineCodingRound.UberMachineCoding.Model.Vehicle;
-import MachineCodingRound.UberMachineCoding.Model.VehicleType;
+import MachineCodingRound.UberMachineCoding.enums.VehicleType;
 
 public class SurgePriceStrategy implements PricingStrategy{
     private int surgeCount;
